@@ -1,0 +1,20 @@
+[package]
+name = "acvm_server"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1"
+futures = "0.3"
+tracing = "0.1.34"
+tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
+tokio = { version = "1.16", features = ["full"] }
+tokio-stream = { version = "0.1", features = ["sync"] }
+serde_json = { version = "1" }
+tower-http = { version = "0.4.0", features = ["full"] }
+tower = { version = "0.4.13", features = ["full"] }
+hyper = "0.14.20"
+console-subscriber = "0.2.0"
+jsonrpsee = { version = "0.22.2", features = ["http-client", "server", "macros"] }
