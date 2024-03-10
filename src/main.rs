@@ -1,11 +1,12 @@
 use std::net::SocketAddr;
 
+use acvm_cli::execute_program_from_witness;
 use jsonrpsee::core::async_trait;
 use jsonrpsee::proc_macros::rpc;
 use jsonrpsee::server::Server;
 use jsonrpsee::types::ErrorObjectOwned;
 
-#[rpc(server, client)]
+#[rpc(server)]
 pub trait Rpc {
     /// Normal method call example.
     #[method(name = "add")]
