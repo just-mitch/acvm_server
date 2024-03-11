@@ -1,24 +1,45 @@
+#![warn(dead_code)]
 use std::net::SocketAddr;
 
-use acvm_cli::execute_program_from_witness;
+use acvm_cli::cli::execute_cmd::ExecuteCommand;
 use jsonrpsee::core::async_trait;
 use jsonrpsee::proc_macros::rpc;
 use jsonrpsee::server::Server;
-use jsonrpsee::types::ErrorObjectOwned;
+use jsonrpsee::types::{ErrorCode, ErrorObjectOwned};
 
 #[rpc(server)]
 pub trait Rpc {
     /// Normal method call example.
-    #[method(name = "add")]
-    fn add(&self, a: u16, b: u16) -> Result<u16, ErrorObjectOwned>;
+    #[method(name = "run")]
+    fn run(
+        &self,
+        output_witness: String,
+        input_witness: String,
+        bytecode: String,
+        working_directory: String,
+    ) -> Result<String, ErrorObjectOwned>;
 }
 
 pub struct RpcServerImpl;
 
 #[async_trait]
 impl RpcServer for RpcServerImpl {
-    fn add(&self, first_param: u16, second_param: u16) -> Result<u16, ErrorObjectOwned> {
-        Ok(first_param + second_param)
+    fn run(
+        &self,
+        output_witness: String,
+        input_witness: String,
+        bytecode: String,
+        working_directory: String,
+    ) -> Result<String, ErrorObjectOwned> {
+        let cmd_struct = ExecuteCommand {
+            output_witness: Some(output_witness),
+            input_witness,
+            bytecode,
+            working_directory,
+            print: false,
+        };
+        acvm_cli::cli::execute_cmd::run_command(cmd_struct)
+            .map_err(|_| ErrorObjectOwned::from(ErrorCode::InternalError))
     }
 }
 
