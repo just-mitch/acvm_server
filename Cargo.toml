@@ -6,8 +6,11 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-acvm_cli = { path = "/Users/mitch/apps/aztec-packages/noir/noir-repo/tooling/acvm_cli" }
+acir = { path = "/Users/mitch/apps/aztec-packages/noir/noir-repo/acvm-repo/acir" }
+bn254_blackbox_solver = { path = "/Users/mitch/apps/aztec-packages/noir/noir-repo/acvm-repo/bn254_blackbox_solver" }
+nargo = { path = "/Users/mitch/apps/aztec-packages/noir/noir-repo/tooling/nargo" }
 
+thiserror = "1.0.21"
 anyhow = "1"
 futures = "0.3"
 tracing = "0.1.34"
