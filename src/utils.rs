@@ -8,7 +8,7 @@ use acir::{
 
 use crate::errors::{CliError, FilesystemError};
 
-pub(crate) fn read_inputs_from_file<P: AsRef<Path>>(
+pub fn read_inputs_from_file<P: AsRef<Path>>(
     working_directory: P,
     file_name: &String,
 ) -> Result<WitnessMap, CliError> {

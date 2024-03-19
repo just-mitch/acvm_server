@@ -1,5 +1,6 @@
 #![warn(dead_code)]
 
+use std::io::Read;
 use std::net::SocketAddr;
 
 use jsonrpsee::core::async_trait;
@@ -35,17 +36,17 @@ pub(crate) fn execute_program_from_witness(
 pub trait Rpc {
     /// Normal method call example.
     #[method(name = "run")]
-    fn run(&self, witness_map: String, bytecode: String) -> Result<WitnessMap, ErrorObjectOwned>;
+    fn run(&self, witness_map: Vec<u8>, bytecode: Vec<u8>) -> Result<WitnessMap, ErrorObjectOwned>;
 }
 
 pub struct RpcServerImpl;
 
 #[async_trait]
 impl RpcServer for RpcServerImpl {
-    fn run(&self, witness: String, bytecode: String) -> Result<WitnessMap, ErrorObjectOwned> {
-        let witness_map = WitnessMap::try_from(witness.as_bytes())
+    fn run(&self, witness: Vec<u8>, bytecode: Vec<u8>) -> Result<WitnessMap, ErrorObjectOwned> {
+        let witness_map = WitnessMap::try_from(witness.as_slice())
             .map_err(|_| ErrorObjectOwned::from(ErrorCode::InternalError))?;
-        execute_program_from_witness(&witness_map, bytecode.as_bytes(), None)
+        execute_program_from_witness(&witness_map, bytecode.as_slice(), None)
             .map_err(|_| ErrorObjectOwned::from(ErrorCode::InternalError))
     }
 }
